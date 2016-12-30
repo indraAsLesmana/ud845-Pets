@@ -15,11 +15,11 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -100,6 +100,18 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
+                PetsDBHelper mDbHelper = new PetsDBHelper(this);
+                SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+
+                ContentValues values = new ContentValues();
+                values.put(PetEntry.COLUMN_PET_NAME, "jack");
+                values.put(PetEntry.COLUMN_PET_BREED, "PitBull");
+                values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
+                values.put(PetEntry.COLUMN_PET_WEIGHT, 12);
+
+                db.insert(PetEntry.TABLE_NAME, null, values);
+
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:

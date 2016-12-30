@@ -38,11 +38,11 @@ public class PetsDBHelper extends SQLiteOpenHelper {
     }
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + PetEntry.TABLE_NAME + " (" +
-                    PetEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    PetEntry.COLUMN_PET_NAME + " TEXT NOT NULL," +
-                    PetEntry.COLUMN_PET_BREED + " TEXT," +
-                    PetEntry.COLUMN_PET_GENDER + " INTEGER NOT NULL," +
+            "CREATE TABLE " + PetEntry.TABLE_NAME + " ("+
+                    PetEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    PetEntry.COLUMN_PET_NAME + " TEXT NOT NULL, " +
+                    PetEntry.COLUMN_PET_BREED + " TEXT, " +
+                    PetEntry.COLUMN_PET_GENDER + " INTEGER NOT NULL, " +
                     PetEntry.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0);";
 
     private static final String SQL_DELETE_TABLE =
