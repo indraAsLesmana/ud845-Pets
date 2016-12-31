@@ -103,6 +103,7 @@ public class CatalogActivity extends AppCompatActivity {
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
                 Helpers.insertData(this, "jerry", "kintamani", PetEntry.GENDER_MALE, 15);
+                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:

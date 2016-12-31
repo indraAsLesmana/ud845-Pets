@@ -15,7 +15,6 @@
  */
 package com.example.android.pets;
 
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +32,6 @@ import android.widget.Toast;
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.helper.Helpers;
 
-import java.io.ObjectInputValidation;
 
 /**
  * Allows user to create a new pet or edit an existing one.
