@@ -19,10 +19,10 @@ public class Helpers {
     /**
      * Insert Helpers to insert new data to database
      * */
-    public static void insertData (Context context, String name, String breed, int gender, int weight){
+    public static void DBinsertData(Context context, String name, String breed, int gender, int weight){
 
         PetsDBHelper mDbHelper = new PetsDBHelper(context);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         /**
          * @param values this instance ContentValues. is "Key - Value pair" for database;
          * */
@@ -34,7 +34,7 @@ public class Helpers {
         db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
     }
 
-    public static void deleteData(Context context, String tableName) {
+    public static void DBdeleteData(Context context, String tableName) {
         PetsDBHelper mDbHelper = new PetsDBHelper(context);
 
         // Create and/or open a database to read from it
@@ -42,7 +42,8 @@ public class Helpers {
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("DELETE FROM " + tableName , null);
-        cursor.close();
+//        Cursor cursor = db.rawQuery("DELETE FROM " + tableName , null);
+        db.delete(tableName, null, null);
+//        cursor.close();
     }
 }
