@@ -29,8 +29,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.data.PetsDBHelper;
+import com.example.android.pets.helper.Helpers;
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -100,22 +102,12 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
-                PetsDBHelper mDbHelper = new PetsDBHelper(this);
-                SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-
-                ContentValues values = new ContentValues();
-                values.put(PetEntry.COLUMN_PET_NAME, "jack");
-                values.put(PetEntry.COLUMN_PET_BREED, "PitBull");
-                values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
-                values.put(PetEntry.COLUMN_PET_WEIGHT, 12);
-
-                db.insert(PetEntry.TABLE_NAME, null, values);
-
+                Helpers.insertData(this, "jerry", "kintamani", PetEntry.GENDER_MALE, 15);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // Do nothing for now
+                Helpers.deleteData(this, PetEntry.TABLE_NAME);
                 return true;
         }
         return super.onOptionsItemSelected(item);
