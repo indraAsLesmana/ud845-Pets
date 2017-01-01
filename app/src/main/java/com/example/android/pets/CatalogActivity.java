@@ -109,15 +109,14 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
-                Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
+                Constant.TOTAL_ROW = Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
                 displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // Do nothing for now
-                long deleteResult = Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);
+                Constant.TOTAL_ROW = Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);
                 displayDatabaseInfo();
-                Toast.makeText(this, "Delete row: " + String.valueOf(deleteResult), Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
