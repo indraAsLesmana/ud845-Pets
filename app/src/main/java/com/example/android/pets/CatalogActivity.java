@@ -27,9 +27,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.data.PetsDBHelper;
+import com.example.android.pets.helper.Constant;
 import com.example.android.pets.helper.Helpers;
 
 /**
@@ -83,6 +85,13 @@ public class CatalogActivity extends AppCompatActivity {
             // resources and makes it invalid.
             cursor.close();
         }
+        Toast.makeText(this, "Row total: " + Constant.TOTAL_ROW, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displayDatabaseInfo();
     }
 
     @Override
@@ -106,8 +115,9 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // Do nothing for now
-                Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);
+                long deleteResult = Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);
                 displayDatabaseInfo();
+                Toast.makeText(this, "Delete row: " + String.valueOf(deleteResult), Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
