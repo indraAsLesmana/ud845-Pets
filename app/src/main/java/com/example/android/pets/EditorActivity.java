@@ -126,14 +126,12 @@ public class EditorActivity extends AppCompatActivity {
             case R.id.action_save:
                 // Do nothing for now
                 if (inputValidation()){
-                    Constant.TOTAL_ROW = Helpers.DBinsertData(this,
+                     Helpers.DBinsertData(this,
                             mNameEditText.getText().toString(), // name
                             mBreedEditText.getText().toString(),// breed
                             mGender,                            // gender
                             Integer.parseInt(mWeightEditText.getText().toString())); //weight
 
-                    /*Toast.makeText(this, "New row insert:" + String.valueOf(resultRow),
-                            Toast.LENGTH_LONG).show();*/
                 }else {
                     Toast.makeText(this, "Please fill all form", Toast.LENGTH_LONG).show();
                 }

@@ -85,13 +85,27 @@ public class CatalogActivity extends AppCompatActivity {
             // resources and makes it invalid.
             cursor.close();
         }
-        Toast.makeText(this, "Row total: " + Constant.TOTAL_ROW, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * on udacity with onStart, but i think with onResume great
+     * */
     @Override
     protected void onResume() {
         super.onResume();
         displayDatabaseInfo();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    /**
+     * Since getWritableDatabase() and getReadableDatabase() are expensive to call when the database is closed,
+     * you should leave your database connection open for as long as you possibly need to access it. Typically,
+     * it is optimal to close the database in the onDestroy() of the calling Activity.
+     * */
+
+
     }
 
     @Override
@@ -109,7 +123,7 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
-                Constant.TOTAL_ROW = Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
+                Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
                 displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
