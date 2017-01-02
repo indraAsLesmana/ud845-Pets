@@ -69,7 +69,8 @@ public class Helpers {
         /**
          * @param projection what column you want to viewed
          * */
-        String[] projection = { PetEntry.COLUMN_PET_BREED,
+        String[] projection = {
+                PetEntry.COLUMN_PET_BREED,
                 PetEntry.COLUMN_PET_WEIGHT };
         /**
          * @param selection like WHERE condition
