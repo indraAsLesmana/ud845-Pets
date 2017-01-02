@@ -88,11 +88,53 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.TABLE_NAME,
                 projection,
                 null, null, null, null, null);
+
+        //define column index position you want to view
+        int columnId = cursor.getColumnIndex(PetEntry._ID);
+        int columnName = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
+        int columnBreed = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
+        int columnGender = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
+        int columnWeight = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
+
+        TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+        displayView.setText("Number of rows in pets database table: " + cursor.getCount() + "\n");
+
+        displayView.append(PetEntry._ID + " - " + PetEntry.COLUMN_PET_NAME + "\n");
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+
+            while (cursor.moveToNext()) {
+                int rowId = cursor.getInt(columnId);
+                String nameValue = cursor.getString(columnName);
+                String breedValue = cursor.getString(columnBreed);
+                int genderValue = cursor.getInt(columnGender);
+                int weightValue = cursor.getInt(columnWeight);
+
+                String genderResult;
+                switch (genderValue){
+                    case PetEntry.GENDER_UNKNOWN:
+                        genderResult = "Unknown";
+                        break;
+                    case PetEntry.GENDER_FEMALE:
+                        genderResult = "Female";
+                        break;
+                    case PetEntry.GENDER_MALE:
+                        genderResult = "Male";
+                        break;
+                    default:
+                        genderResult = "Unkown";
+                }
+
+                displayView.append("\n" +
+                        rowId + " - " +
+                        nameValue + " - " +
+                        breedValue + " - " +
+                        genderResult + " - " +
+                        weightValue
+                );
+            }
+
         }catch (SQLiteException e){
             Log.e(TAG, e.getMessage());
         } finally {
