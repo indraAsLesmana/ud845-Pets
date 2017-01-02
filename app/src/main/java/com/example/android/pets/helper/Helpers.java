@@ -66,23 +66,30 @@ public class Helpers {
     public static void trayCursor (Context context) {
         PetsDBHelper mDbHelper = new PetsDBHelper(context);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
+        /**
+         * @param projection what column you want to viewed
+         * */
         String[] projection = { PetEntry.COLUMN_PET_BREED,
                 PetEntry.COLUMN_PET_WEIGHT };
+        /**
+         * @param selection like WHERE condition
+         * @param selecttionArgs value for where clouse
+         * */
         String selection = PetEntry.COLUMN_PET_GENDER + "=?";
         String [] selectionArgs = new String[] { String.valueOf(PetEntry.GENDER_FEMALE)};
 
-        Cursor c = db.query(PetEntry.TABLE_NAME, projection,
-                selection, selectionArgs,
-                null, null, null);
+        /**
+         * like SELECT breed, weight FROM pets.
+         * */
+        Cursor c = db.query(
+                PetEntry.TABLE_NAME, //pets
+                projection, //column select
+                selection,  // where condition
+                selectionArgs, // where value
+                null,
+                null,
+                null); // sort like ORDER BY
 
-        List itemIds = new ArrayList<>();
-        while(c.moveToNext()) {
-            long itemId = c.getLong(
-                    c.getColumnIndexOrThrow(PetEntry._ID));
-            itemIds.add(itemId);
-        }
-        Log.i(TAG, itemIds.toString());
         c.close();
 
     }
