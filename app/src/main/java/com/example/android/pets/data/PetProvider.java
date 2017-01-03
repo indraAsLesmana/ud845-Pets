@@ -110,7 +110,23 @@ public class PetProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        int match = sUriMatcher.match(uri);
+        switch (match){
+            case PETS:
+                return insertPets (uri, values);
+            default:
+                throw new IllegalArgumentException("Error inserting queri" + uri);
+        }
+    }
+
+    private Uri insertPets(Uri uri, ContentValues values) {
+        SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        long id = db.insert(
+                PetEntry.TABLE_NAME,
+                null,
+                values);
+
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override

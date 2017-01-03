@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -126,11 +127,19 @@ public class EditorActivity extends AppCompatActivity {
             case R.id.action_save:
                 // Do nothing for now
                 if (inputValidation()){
-                     Helpers.DBinsertData(this,
+                     /*Helpers.DBinsertData(this,
                             mNameEditText.getText().toString(), // name
                             mBreedEditText.getText().toString(),// breed
                             mGender,                            // gender
-                            Integer.parseInt(mWeightEditText.getText().toString())); //weight
+                            Integer.parseInt(mWeightEditText.getText().toString())); //weight*/
+
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(PetEntry.COLUMN_PET_NAME, mNameEditText.getText().toString());
+                    contentValues.put(PetEntry.COLUMN_PET_BREED, mBreedEditText.getText().toString());
+                    contentValues.put(PetEntry.COLUMN_PET_GENDER, mGender);
+                    contentValues.put(PetEntry.COLUMN_PET_WEIGHT, Integer.parseInt(mWeightEditText.getText().toString()));
+
+                    getContentResolver().insert(PetEntry.CONTENT_URI, contentValues);
 
                 }else {
                     Toast.makeText(this, "Please fill all form", Toast.LENGTH_LONG).show();
