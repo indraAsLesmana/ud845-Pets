@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.data.PetsDBHelper;
 import com.example.android.pets.helper.Constant;
@@ -84,10 +85,12 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_WEIGHT
                 };
 
-        Cursor cursor = db.query(
+        /*Cursor cursor = db.query(
                 PetEntry.TABLE_NAME,
                 projection,
                 null, null, null, null, null);
+        */
+        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, projection, null, null, null);
 
         //define column index position you want to view
         int columnId = cursor.getColumnIndex(PetEntry._ID);
