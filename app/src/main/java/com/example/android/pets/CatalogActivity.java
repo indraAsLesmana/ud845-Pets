@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -183,7 +184,14 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
-                Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
+//                Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(PetEntry.COLUMN_PET_NAME, "dummyName");
+                contentValues.put(PetEntry.COLUMN_PET_BREED, "breedName");
+                contentValues.put(PetEntry.COLUMN_PET_GENDER, 1);
+                contentValues.put(PetEntry.COLUMN_PET_WEIGHT, 6);
+                getContentResolver().insert(PetEntry.CONTENT_URI,contentValues);
+
                 displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option

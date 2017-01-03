@@ -16,10 +16,12 @@
 package com.example.android.pets;
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -139,7 +141,8 @@ public class EditorActivity extends AppCompatActivity {
                     contentValues.put(PetEntry.COLUMN_PET_GENDER, mGender);
                     contentValues.put(PetEntry.COLUMN_PET_WEIGHT, Integer.parseInt(mWeightEditText.getText().toString()));
 
-                    getContentResolver().insert(PetEntry.CONTENT_URI, contentValues);
+                    Uri uriResult = getContentResolver().insert(PetEntry.CONTENT_URI, contentValues);
+                    Log.i(TAG, uriResult.toString());
 
                 }else {
                     Toast.makeText(this, "Please fill all form", Toast.LENGTH_LONG).show();

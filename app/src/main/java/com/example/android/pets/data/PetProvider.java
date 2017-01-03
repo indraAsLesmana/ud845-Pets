@@ -67,32 +67,18 @@ public class PetProvider extends ContentProvider {
         switch (match){
             case PETS:
                 //create Select * from pets;
-                cursor = db.query(
-                        PetEntry.TABLE_NAME,
-                        projection,
-                        null,
-                        null,
-                        null,
-                        null,
-                        sortOrder,
-                        null
-                ); break;
+                cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, sortOrder,
+                        null);
+                break;
 
             case PET_ID:
                 //create select where from pets;
                 selection = PetEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
 
-                cursor = db.query(
-                        PetEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder,
-                        null
-                ); break;
+                cursor = db.query(PetEntry.TABLE_NAME, projection, selection, selectionArgs, null, null,
+                        sortOrder, null);
+                break;
 
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
@@ -119,16 +105,6 @@ public class PetProvider extends ContentProvider {
         }
     }
 
-    private Uri insertPets(Uri uri, ContentValues values) {
-        SQLiteDatabase db = mDBhelper.getWritableDatabase();
-        long id = db.insert(
-                PetEntry.TABLE_NAME,
-                null,
-                values);
-
-        return ContentUris.withAppendedId(uri, id);
-    }
-
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return 0;
@@ -137,5 +113,15 @@ public class PetProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
+    }
+
+    private Uri insertPets(Uri uri, ContentValues values) {
+        SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        long id = db.insert(
+                PetEntry.TABLE_NAME,
+                null,
+                values);
+
+        return ContentUris.withAppendedId(uri, id);
     }
 }
