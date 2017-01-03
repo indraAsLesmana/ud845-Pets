@@ -197,7 +197,8 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // Do nothing for now
-                Constant.TOTAL_ROW = Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);
+//                Constant.TOTAL_ROW = Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);
+                getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
                 displayDatabaseInfo();
                 return true;
         }

@@ -11,6 +11,9 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.example.android.pets.data.PetContract.PetEntry;
+
+import java.util.IllegalFormatConversionException;
+
 /**
  * Created by indraaguslesmana on 1/3/17.
  */
@@ -107,7 +110,17 @@ public class PetProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+
+        switch (match){
+            case PETS:
+                return deleteAlltable();
+            case PET_ID:
+                return deleteById(selection, selectionArgs);
+            default:
+                throw  new IllegalArgumentException("error delete data" + uri);
+        }
     }
 
     @Override
@@ -115,13 +128,25 @@ public class PetProvider extends ContentProvider {
         return 0;
     }
 
+    /** insert data method*/
     private Uri insertPets(Uri uri, ContentValues values) {
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
         long id = db.insert(
                 PetEntry.TABLE_NAME,
                 null,
                 values);
-
         return ContentUris.withAppendedId(uri, id);
+    }
+
+    /** delete by id method */
+    private int deleteById(String selection, String[] selectionArgs) {
+        SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        return db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
+    /** delete all data in table*/
+    private int deleteAlltable() {
+        SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        return db.delete(PetEntry.TABLE_NAME, null, null);
     }
 }
