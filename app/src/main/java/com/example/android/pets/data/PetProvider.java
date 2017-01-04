@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.example.android.pets.R;
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.helper.Constant;
 
@@ -129,6 +130,11 @@ public class PetProvider extends ContentProvider {
 
     /** insert data method*/
     private Uri insertPets(Uri uri, ContentValues values) {
+        if (!inputCheck(values)){
+            Toast.makeText(getContext(), "reject by CoProvider", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
         long id = db.insert(
                 PetEntry.TABLE_NAME,
@@ -138,7 +144,6 @@ public class PetProvider extends ContentProvider {
         /** make toast for every new insert row, if success*/
         Uri uriResult = ContentUris.withAppendedId(uri, id);
         if (id != -1){
-            Constant.TOTAL_ROW = id;
             Toast.makeText(getContext(), "Insert Success at: \n" + uriResult.toString(), Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(getContext(), "insert failure, return value: " + id, Toast.LENGTH_SHORT).show();
@@ -157,5 +162,21 @@ public class PetProvider extends ContentProvider {
     private int deleteAlltable() {
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
         return db.delete(PetEntry.TABLE_NAME, null, null);
+    }
+
+    /**
+     * sanity check for vall values
+     * */
+    private boolean inputCheck (ContentValues values){
+        boolean inputResult = true;
+        if (values.getAsString(PetEntry.COLUMN_PET_NAME).isEmpty() ||
+                values.getAsString(PetEntry.COLUMN_PET_BREED).isEmpty() ||
+                values.getAsInteger(PetEntry.COLUMN_PET_GENDER) == null ||
+                values.getAsInteger(PetEntry.COLUMN_PET_WEIGHT) == null) {
+
+            return inputResult = false;
+        }
+
+        return inputResult;
     }
 }
