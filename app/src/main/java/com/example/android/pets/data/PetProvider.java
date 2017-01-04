@@ -9,8 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
+import com.example.android.pets.helper.Constant;
 
 import java.util.IllegalFormatConversionException;
 
@@ -70,17 +72,14 @@ public class PetProvider extends ContentProvider {
         switch (match){
             case PETS:
                 //create Select * from pets;
-                cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, sortOrder,
-                        null);
+                cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, sortOrder, null);
                 break;
 
             case PET_ID:
                 //create select where from pets;
                 selection = PetEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-
-                cursor = db.query(PetEntry.TABLE_NAME, projection, selection, selectionArgs, null, null,
-                        sortOrder, null);
+                cursor = db.query(PetEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
                 break;
 
             default:
@@ -135,7 +134,17 @@ public class PetProvider extends ContentProvider {
                 PetEntry.TABLE_NAME,
                 null,
                 values);
-        return ContentUris.withAppendedId(uri, id);
+
+        /** make toast for every new insert row, if success*/
+        Uri uriResult = ContentUris.withAppendedId(uri, id);
+        if (id != -1){
+            Constant.TOTAL_ROW = id;
+            Toast.makeText(getContext(), "Insert Success at: \n" + uriResult.toString(), Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getContext(), "insert failure, return value: " + id, Toast.LENGTH_SHORT).show();
+        }
+
+        return uriResult;
     }
 
     /** delete by id method */
