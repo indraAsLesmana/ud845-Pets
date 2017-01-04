@@ -125,7 +125,48 @@ public class PetProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        int match = sUriMatcher.match(uri);
+        switch (match){
+            case PETS:
+                return updatePet(values);
+            case PET_ID:
+                return updatePet_id(values, selection, selectionArgs);
+            default:
+                Toast.makeText(getContext(), "error update", Toast.LENGTH_SHORT).show();
+        }
+
         return 0;
+    }
+
+    private int updatePet_id(ContentValues values, String selection, String[] selectionArgs) {
+        if (!inputCheck(values)){
+            Toast.makeText(getContext(), "reject by CoProvider", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+        SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        int id = db.update(
+                PetEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+
+        return id;
+    }
+
+    private int updatePet(ContentValues values) {
+        if (!inputCheck(values)){
+            Toast.makeText(getContext(), "reject by CoProvider", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+        SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        int id = db.update(
+                PetEntry.TABLE_NAME,
+                values,
+                null,
+                null);
+
+        return id;
+
     }
 
     /** insert data method*/
