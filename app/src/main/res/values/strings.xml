@@ -59,4 +59,5 @@
     <!-- Label for dropdown menu option if the pet is female [CHAR LIMIT=20] -->
     <string name="gender_female">Female</string>
     <string name="please_input_allfield">Please input all field</string>
+    <string name="action_update_dummy_data">Update dummy data</string>
 </resources>

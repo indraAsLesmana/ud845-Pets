@@ -41,6 +41,7 @@ import com.example.android.pets.helper.Helpers;
  */
 public class CatalogActivity extends AppCompatActivity {
     private static final String TAG = CatalogActivity.class.getSimpleName();
+    private ContentValues contentValues = new ContentValues();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +186,7 @@ public class CatalogActivity extends AppCompatActivity {
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
 //                Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
-                ContentValues contentValues = new ContentValues();
+                contentValues.clear();
                 contentValues.put(PetEntry.COLUMN_PET_NAME, "dummyName");
                 contentValues.put(PetEntry.COLUMN_PET_BREED, "breedName");
                 contentValues.put(PetEntry.COLUMN_PET_GENDER, 1);
@@ -195,6 +196,21 @@ public class CatalogActivity extends AppCompatActivity {
                 displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
+            case R.id.action_update_dummy_data:
+                contentValues.clear();
+                contentValues.put(PetEntry.COLUMN_PET_NAME, "omen ok");
+                contentValues.put(PetEntry.COLUMN_PET_BREED, "breedName Update");
+                contentValues.put(PetEntry.COLUMN_PET_GENDER, 1);
+                contentValues.put(PetEntry.COLUMN_PET_WEIGHT, 6);
+
+                String selection = PetEntry._ID + "=?";
+                String [] selectionArgs = new String []{"12", "14"};
+
+                getContentResolver().update(PetEntry.CONTENT_URI, contentValues, null, null);
+
+                displayDatabaseInfo();
+                return true;
+
             case R.id.action_delete_all_entries:
                 // Do nothing for now
 //                Constant.TOTAL_ROW = Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);

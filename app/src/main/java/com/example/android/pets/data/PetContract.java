@@ -19,6 +19,7 @@ public final class PetContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_PETS = "pets";
+    public static final String PATH_PETS_ID = "pets/#";
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
@@ -49,5 +50,14 @@ public final class PetContract {
         public static final int GENDER_FEMALE = 2;
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
+        public static final Uri CONTENT_URI_ID = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS_ID);
+
+        public static boolean isValidGender(Integer gender) {
+            boolean result = false;
+            if (gender == GENDER_MALE || gender == GENDER_FEMALE || gender == GENDER_UNKNOWN ){
+                result = true;
+            }
+            return result;
+        }
     }
 }
