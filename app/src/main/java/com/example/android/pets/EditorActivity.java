@@ -196,19 +196,20 @@ public class EditorActivity extends AppCompatActivity implements
         return new CursorLoader(
                 this,
                 uriResult,
-                Constant.PROJECTION_WITHOUT_ID,
+                Constant.PROJECTION_ALL_COLUMN,
                 null, null, null
         );
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        int nameColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_NAME);
-        int breedColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_BREED);
-        int genderColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_GENDER);
-        int weightColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_WEIGHT);
 
-        while (data.moveToNext()){ // fix index out of bound, couse data first read title column
+        if (data.moveToFirst()) { //refactoring by udacity
+            int nameColumn = data.getColumnIndex(PetEntry.COLUMN_PET_NAME);
+            int breedColumn = data.getColumnIndex(PetEntry.COLUMN_PET_BREED);
+            int genderColumn = data.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
+            int weightColumn = data.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
+
             String name = data.getString(nameColumn);
             String breed = data.getString(breedColumn);
             int gender = data.getInt(genderColumn);
@@ -219,7 +220,6 @@ public class EditorActivity extends AppCompatActivity implements
             mWeightEditText.setText(String.valueOf(weight));
             mGenderSpinner.setSelection(gender);
         }
-
     }
 
     @Override
