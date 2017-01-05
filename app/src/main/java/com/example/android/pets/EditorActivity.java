@@ -211,12 +211,13 @@ public class EditorActivity extends AppCompatActivity implements
         while (data.moveToNext()){ // fix index out of bound, couse data first read title column
             String name = data.getString(nameColumn);
             String breed = data.getString(breedColumn);
-            String gender = data.getString(genderColumn);
-            String weight = data.getString(weightColumn);
+            int gender = data.getInt(genderColumn);
+            int weight = data.getInt(weightColumn);
 
             mNameEditText.setText(name);
             mBreedEditText.setText(breed);
-            mWeightEditText.setText(weight);
+            mWeightEditText.setText(String.valueOf(weight));
+            mGenderSpinner.setSelection(gender);
         }
 
     }
