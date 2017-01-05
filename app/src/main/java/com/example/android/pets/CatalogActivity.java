@@ -28,7 +28,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,8 +65,10 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        RelativeLayout empetyView = (RelativeLayout) findViewById(R.id.empety_list);
         //view initialized
         main_listview = (ListView) findViewById(R.id.main_listview);
+        main_listview.setEmptyView(empetyView);
 
         displayDatabaseInfo();
 

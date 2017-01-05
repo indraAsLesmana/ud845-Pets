@@ -60,4 +60,6 @@
     <string name="gender_female">Female</string>
     <string name="please_input_allfield">Please input all field</string>
     <string name="action_update_dummy_data">Update dummy data</string>
+    <string name="empety_text_title">It\'s Lonnely here...</string>
+    <string name="empety_message">data is null add some pets here</string>
 </resources>
