@@ -77,9 +77,9 @@ public class EditorActivity extends AppCompatActivity {
 
             Toast.makeText(this, uriResult.toString(), Toast.LENGTH_SHORT).show();
 
-            getSupportActionBar().setTitle(R.string.edit_pet); //change title to "Edit a pet"
+            setTitle(R.string.edit_pet); //change title to "Edit a pet"
         }else {
-            getSupportActionBar().setTitle(R.string.add_pet); //to "Add a pet"
+            setTitle(R.string.add_pet); //to "Add a pet"
         }
 
         setupSpinner();
