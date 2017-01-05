@@ -31,6 +31,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.helper.Constant;
@@ -40,7 +43,8 @@ import com.example.android.pets.helper.Helpers;
 /**
  * Allows user to create a new pet or edit an existing one.
  */
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG = EditorActivity.class.getSimpleName();
 
     /** EditText field to enter the pet's name */
@@ -60,6 +64,7 @@ public class EditorActivity extends AppCompatActivity {
      * 0 for unknown gender, 1 for male, 2 for female.
      */
     private int mGender = 0;
+    private Uri uriResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +78,9 @@ public class EditorActivity extends AppCompatActivity {
         mGenderSpinner = (Spinner) findViewById(R.id.spinner_gender);
 
         if (getIntent().getData() != null){ // ingat! karna tadi setData, jadi getData
-            Uri uriResult = getIntent().getData();
+            uriResult = getIntent().getData();
 
-            Toast.makeText(this, uriResult.toString(), Toast.LENGTH_SHORT).show();
-
+            getLoaderManager().initLoader(Constant.EDITOR_ACTIVTY, null, this);
             setTitle(R.string.edit_pet); //change title to "Edit a pet"
         }else {
             setTitle(R.string.add_pet); //to "Add a pet"
@@ -182,5 +186,43 @@ public class EditorActivity extends AppCompatActivity {
             result = false;
         }
         return result;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (uriResult == null) {
+            return null;
+        }
+        return new CursorLoader(
+                this,
+                uriResult,
+                Constant.PROJECTION_WITHOUT_ID,
+                null, null, null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        int nameColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_NAME);
+        int breedColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_BREED);
+        int genderColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_GENDER);
+        int weightColumn = data.getColumnIndexOrThrow(PetEntry.COLUMN_PET_WEIGHT);
+
+        while (data.moveToNext()){ // fix index out of bound, couse data first read title column
+            String name = data.getString(nameColumn);
+            String breed = data.getString(breedColumn);
+            String gender = data.getString(genderColumn);
+            String weight = data.getString(weightColumn);
+
+            mNameEditText.setText(name);
+            mBreedEditText.setText(breed);
+            mWeightEditText.setText(weight);
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mNameEditText.setText(null);
     }
 }
