@@ -5,5 +5,9 @@ package com.example.android.pets.helper;
  */
 
 public class Constant {
+    /** to editify unieqely per activty*/
+    public static final int CATALOG_ACTIVITY = 01;
+
     public static long TOTAL_ROW;
+
 }
