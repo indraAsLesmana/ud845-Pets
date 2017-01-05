@@ -72,12 +72,10 @@ public class EditorActivity extends AppCompatActivity {
         mWeightEditText = (EditText) findViewById(R.id.edit_pet_weight);
         mGenderSpinner = (Spinner) findViewById(R.id.spinner_gender);
 
-        if (getIntent().getExtras() != null){
-            String uriResult = getIntent().getStringExtra("URIpath");
-            Uri uri = Uri.parse(uriResult);
+        if (getIntent().getData() != null){ // ingat! karna tadi setData, jadi getData
+            Uri uriResult = getIntent().getData();
 
-            Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this, uriResult.toString(), Toast.LENGTH_SHORT).show();
 
             getSupportActionBar().setTitle(R.string.edit_pet); //change title to "Edit a pet"
         }else {

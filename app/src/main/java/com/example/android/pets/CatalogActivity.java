@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -91,16 +92,13 @@ public class CatalogActivity extends AppCompatActivity implements
         main_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor itemCursor = (Cursor) mCursorAdapter.getItem(position);
-                int idRrow = itemCursor.getColumnIndex(PetEntry._ID);
-                idRrow = itemCursor.getInt(idRrow);
-
-                Uri uri = Uri.withAppendedPath(PetEntry.CONTENT_URI, String.valueOf(idRrow));
+                /**
+                 * if you want build path use Uri.withAppendedpath
+                 * */
+                Uri uri = ContentUris.withAppendedId(PetEntry.CONTENT_URI, id);
 
                 Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
-                intent.putExtra("URIpath", uri.toString());
-
-                Log.i(TAG, String.valueOf(uri));
+                intent.setData(uri); // refactoring best with Uri with intent.setData
 
                 startActivity(intent);
             }
