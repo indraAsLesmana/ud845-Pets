@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,28 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //view initialized
+        main_listview = (ListView) findViewById(R.id.main_listview);
+
+        displayDatabaseInfo();
+
+        main_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+    }
+
+    /**
+     * Temporary helper method to display information in the onscreen TextView about the state of
+     * the pets database.
+     */
+    private void displayDatabaseInfo() {
+        /**
+         *if you want select all like this, is can shortcut with Raw sql stament
+         *like " * " for SELECT * FROM ...
+         */
 
         /** Projection */
         String [] projection = {
@@ -70,125 +93,24 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_BREED,
                 PetEntry.COLUMN_PET_GENDER,
                 PetEntry.COLUMN_PET_WEIGHT
-        };
-
-        main_listview = (ListView) findViewById(R.id.main_listview);
+                };
 
         cursorResult = getContentResolver().query(PetEntry.CONTENT_URI, projection, null, null, null);
 
         adapter = new PetCursorAdapter(this, cursorResult);
         main_listview.setAdapter(adapter);
-
-//        displayDatabaseInfo();
     }
 
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the pets database.
-     */
-//    private void displayDatabaseInfo() {
-//        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-//        // and pass the context, which is the current activity.
-//        PetsDBHelper mDbHelper = new PetsDBHelper(this);
-//
-//        // Create and/or open a database to read from it
-//        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-//
-//        // Perform this raw SQL query "SELECT * FROM pets"
-//        // to get a Cursor that contains all rows from the pets table.
-//        /**
-//         *if you want select all like this, is can shortcut with Raw sql stament
-//         *like " * " for SELECT * FROM ...
-//         */
-//        String [] projection = {
-//                PetEntry._ID,
-//                PetEntry.COLUMN_PET_NAME,
-//                PetEntry.COLUMN_PET_BREED,
-//                PetEntry.COLUMN_PET_GENDER,
-//                PetEntry.COLUMN_PET_WEIGHT
-//                };
-//
-//        /*Cursor cursor = db.query(
-//                PetEntry.TABLE_NAME,
-//                projection,
-//                null, null, null, null, null);
-//        */
-//        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, projection, null, null, null);
-//
-//        //define column index position you want to view
-//        int columnId = cursor.getColumnIndex(PetEntry._ID);
-//        int columnName = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
-//        int columnBreed = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
-//        int columnGender = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
-//        int columnWeight = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
-//
-//        TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-//        displayView.setText("Number of rows in pets database table: " + cursor.getCount() + "\n");
-//
-//        displayView.append(PetEntry._ID + " - " + PetEntry.COLUMN_PET_NAME + "\n");
-//        try {
-//            // Display the number of rows in the Cursor (which reflects the number of rows in the
-//            // pets table in the database).
-//
-//            while (cursor.moveToNext()) {
-//                int rowId = cursor.getInt(columnId);
-//                String nameValue = cursor.getString(columnName);
-//                String breedValue = cursor.getString(columnBreed);
-//                int genderValue = cursor.getInt(columnGender);
-//                int weightValue = cursor.getInt(columnWeight);
-//
-//                String genderResult;
-//                switch (genderValue){
-//                    case PetEntry.GENDER_UNKNOWN:
-//                        genderResult = "Unknown";
-//                        break;
-//                    case PetEntry.GENDER_FEMALE:
-//                        genderResult = "Female";
-//                        break;
-//                    case PetEntry.GENDER_MALE:
-//                        genderResult = "Male";
-//                        break;
-//                    default:
-//                        genderResult = "Unkown";
-//                }
-//
-//                displayView.append("\n" +
-//                        rowId + " - " +
-//                        nameValue + " - " +
-//                        breedValue + " - " +
-//                        genderResult + " - " +
-//                        weightValue
-//                );
-//            }
-//
-//        }catch (SQLiteException e){
-//            Log.e(TAG, e.getMessage());
-//        } finally {
-//            // Always close the cursor when you're done reading from it. This releases all its
-//            // resources and makes it invalid.
-//            cursor.close();
-//        }
-//    }
 
-    /**
-     * on udacity with onStart, but i think with onResume great
-     * */
     @Override
     protected void onResume() {
         super.onResume();
-//        displayDatabaseInfo();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    /**
-     * Since getWritableDatabase() and getReadableDatabase() are expensive to call when the database is closed,
-     * you should leave your database connection open for as long as you possibly need to access it. Typically,
-     * it is optimal to close the database in the onDestroy() of the calling Activity.
-     * */
-
-
     }
 
     @Override
