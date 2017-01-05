@@ -195,14 +195,14 @@ public class PetProvider extends ContentProvider {
         // Otherwise, get writeable database to update the data
         SQLiteDatabase database = mDBhelper.getWritableDatabase();
 
-        int id = database.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+        int rowUpdate = database.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
 
         /** notfied vied if change has been made*/
-        if (id != -1){
+        if (rowUpdate != 0){
             getContext().getContentResolver().notifyChange(uri, null);
         }
         // Returns the number of database rows affected by the update statement
-        return id;
+        return rowUpdate;
     }
 
     /** insert data method*/
@@ -238,28 +238,28 @@ public class PetProvider extends ContentProvider {
     /** delete by id method */
     private int deleteById(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
-        int id = db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+        int rowDeleted = db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
 
         /** notify if delete success*/
-        if(id != -1){
+        if(rowDeleted != 0){
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        return id;
+        return rowDeleted;
     }
 
     /** delete all data in table*/
     private int deleteAlltable(Uri uri) {
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
 
-        int id = db.delete(PetEntry.TABLE_NAME, null, null);
+        int rowDeleted = db.delete(PetEntry.TABLE_NAME, null, null);
 
         /** notify if delete success*/
-        if(id != -1){
+        if(rowDeleted != 0){
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        return id;
+        return rowDeleted;
     }
 
     /**

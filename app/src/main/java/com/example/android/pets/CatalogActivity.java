@@ -18,9 +18,11 @@ package com.example.android.pets;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,14 +92,17 @@ public class CatalogActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor itemCursor = (Cursor) mCursorAdapter.getItem(position);
+                int idRrow = itemCursor.getColumnIndex(PetEntry._ID);
+                idRrow = itemCursor.getInt(idRrow);
 
-                String nameResult = itemCursor.getString(itemCursor.
-                        getColumnIndexOrThrow(PetEntry.COLUMN_PET_NAME));
-                String breedResult = itemCursor.getString(itemCursor.
-                        getColumnIndexOrThrow(PetEntry.COLUMN_PET_BREED));
+                Uri uri = Uri.withAppendedPath(PetEntry.CONTENT_URI, String.valueOf(idRrow));
 
-                Toast.makeText(CatalogActivity.this, nameResult, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                intent.putExtra("URIpath", uri.toString());
 
+                Log.i(TAG, String.valueOf(uri));
+
+                startActivity(intent);
             }
         });
         //inisitalized adapter

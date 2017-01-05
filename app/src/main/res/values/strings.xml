@@ -62,4 +62,6 @@
     <string name="action_update_dummy_data">Update dummy data</string>
     <string name="empety_text_title">It\'s Lonnely here...</string>
     <string name="empety_message">data is null add some pets here</string>
+    <string name="edit_pet">Edit a pet</string>
+    <string name="add_pet">Add a pet</string>
 </resources>

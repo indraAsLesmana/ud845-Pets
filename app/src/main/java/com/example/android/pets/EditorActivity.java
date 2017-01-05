@@ -16,6 +16,7 @@
 package com.example.android.pets;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -70,6 +71,18 @@ public class EditorActivity extends AppCompatActivity {
         mBreedEditText = (EditText) findViewById(R.id.edit_pet_breed);
         mWeightEditText = (EditText) findViewById(R.id.edit_pet_weight);
         mGenderSpinner = (Spinner) findViewById(R.id.spinner_gender);
+
+        if (getIntent().getExtras() != null){
+            String uriResult = getIntent().getStringExtra("URIpath");
+            Uri uri = Uri.parse(uriResult);
+
+            Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
+
+
+            getSupportActionBar().setTitle(R.string.edit_pet); //change title to "Edit a pet"
+        }else {
+            getSupportActionBar().setTitle(R.string.add_pet); //to "Add a pet"
+        }
 
         setupSpinner();
     }
