@@ -7,12 +7,14 @@
     android:padding="@dimen/activity_margin">
 
     <TextView
+        android:id="@+id/name_tx"
         style="@style/Text_listitem_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/action_delete" />
 
     <TextView
+        android:id="@+id/breed_tx"
         style="@style/Text_listitem_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
