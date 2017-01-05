@@ -87,6 +87,8 @@ public class PetProvider extends ContentProvider {
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
 
+        /** this make automaticly reload for every data change...*/
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -123,9 +125,9 @@ public class PetProvider extends ContentProvider {
 
         switch (match){
             case PETS:
-                return deleteAlltable();
+                return deleteAlltable(uri);
             case PET_ID:
-                return deleteById(selection, selectionArgs);
+                return deleteById(uri, selection, selectionArgs);
             default:
                 throw  new IllegalArgumentException("error delete data" + uri);
         }
@@ -193,8 +195,14 @@ public class PetProvider extends ContentProvider {
         // Otherwise, get writeable database to update the data
         SQLiteDatabase database = mDBhelper.getWritableDatabase();
 
+        int id = database.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        /** notfied vied if change has been made*/
+        if (id != -1){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
         // Returns the number of database rows affected by the update statement
-        return database.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+        return id;
     }
 
     /** insert data method*/
@@ -213,24 +221,45 @@ public class PetProvider extends ContentProvider {
         /** make toast for every new insert row, if success*/
         Uri uriResult = ContentUris.withAppendedId(uri, id);
         if (id != -1){
-            Toast.makeText(getContext(), "Insert Success at: \n" + uriResult.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Insert Success at: \n" +
+                    uriResult.toString(), Toast.LENGTH_SHORT).show();
+
+            //notify if change has been made
+            getContext().getContentResolver().notifyChange(uri, null);
+
         }else {
-            Toast.makeText(getContext(), "insert failure, return value: " + id, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "insert failure, return value: " +
+                    id, Toast.LENGTH_SHORT).show();
         }
 
         return uriResult;
     }
 
     /** delete by id method */
-    private int deleteById(String selection, String[] selectionArgs) {
+    private int deleteById(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
-        return db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+        int id = db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+
+        /** notify if delete success*/
+        if(id != -1){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return id;
     }
 
     /** delete all data in table*/
-    private int deleteAlltable() {
+    private int deleteAlltable(Uri uri) {
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
-        return db.delete(PetEntry.TABLE_NAME, null, null);
+
+        int id = db.delete(PetEntry.TABLE_NAME, null, null);
+
+        /** notify if delete success*/
+        if(id != -1){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return id;
     }
 
     /**
