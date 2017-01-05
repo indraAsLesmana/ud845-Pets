@@ -110,21 +110,6 @@ public class CatalogActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(Constant.CATALOG_ACTIVITY, null, this);
     }
 
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the pets database.
-     */
-    private void displayDatabaseInfo() {
-        /**
-         *if you want select all like this, is can shortcut with Raw sql stament
-         *like " * " for SELECT * FROM ...
-         */
-        cursorResult = getContentResolver().query(PetEntry.CONTENT_URI, PROJECTION_ALL_3_COLUMN, null, null, null);
-        mCursorAdapter = new PetCursorAdapter(this, cursorResult);
-        main_listview.setAdapter(mCursorAdapter);
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
