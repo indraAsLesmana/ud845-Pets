@@ -71,6 +71,12 @@ public class CatalogActivity extends AppCompatActivity {
         main_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor itemCursor = (Cursor) adapter.getItem(position);
+
+                String nameResult = itemCursor.getString(itemCursor.getColumnIndexOrThrow(PetEntry.COLUMN_PET_NAME));
+                String breedResult = itemCursor.getString(itemCursor.getColumnIndexOrThrow(PetEntry.COLUMN_PET_BREED));
+
+                Toast.makeText(CatalogActivity.this, nameResult, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -105,7 +111,7 @@ public class CatalogActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        displayDatabaseInfo();
     }
 
     @Override
@@ -128,7 +134,6 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
-//                Helpers.DBinsertData(this, "Toto", "Tarrier", PetEntry.GENDER_MALE, 7);
                 contentValues.clear();
                 contentValues.put(PetEntry.COLUMN_PET_NAME, "dummyName");
                 contentValues.put(PetEntry.COLUMN_PET_BREED, "breedName");
@@ -136,7 +141,7 @@ public class CatalogActivity extends AppCompatActivity {
                 contentValues.put(PetEntry.COLUMN_PET_WEIGHT, 6);
                 getContentResolver().insert(PetEntry.CONTENT_URI,contentValues);
 
-//                displayDatabaseInfo();
+                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_update_dummy_data:
@@ -151,14 +156,13 @@ public class CatalogActivity extends AppCompatActivity {
 
                 getContentResolver().update(PetEntry.CONTENT_URI, contentValues, null, null);
 
-//                displayDatabaseInfo();
+                displayDatabaseInfo();
                 return true;
 
             case R.id.action_delete_all_entries:
                 // Do nothing for now
-//                Constant.TOTAL_ROW = Helpers.DBdeleteData(this, PetEntry.TABLE_NAME);
                 getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
-//                displayDatabaseInfo();
+                displayDatabaseInfo();
                 return true;
         }
         return super.onOptionsItemSelected(item);
