@@ -137,20 +137,6 @@ public class CatalogActivity extends AppCompatActivity implements
 
                 return true;
             // Respond to a click on the "Delete all entries" menu option
-            case R.id.action_update_dummy_data:
-                contentValues.clear();
-                contentValues.put(PetEntry.COLUMN_PET_NAME, "omen ok");
-                contentValues.put(PetEntry.COLUMN_PET_BREED, "breedName Update");
-                contentValues.put(PetEntry.COLUMN_PET_GENDER, 1);
-                contentValues.put(PetEntry.COLUMN_PET_WEIGHT, 6);
-
-                String selection = PetEntry._ID + "=?";
-                String [] selectionArgs = new String []{"12", "14"};
-
-                getContentResolver().update(PetEntry.CONTENT_URI, contentValues, null, null);
-
-                return true;
-
             case R.id.action_delete_all_entries:
                 // Do nothing for now
                 getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
