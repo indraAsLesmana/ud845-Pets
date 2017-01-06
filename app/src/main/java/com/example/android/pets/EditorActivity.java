@@ -181,7 +181,7 @@ public class EditorActivity extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.menu_editor, menu);
         MenuItem actionDelete = menu.findItem(R.id.action_delete);
         /** hide, unhide delete action*/
-        if (getIntent().getData() != null) {
+        if (uriResult != null) {
             actionDelete.setVisible(true);
         } else {
             actionDelete.setVisible(false);
@@ -218,7 +218,7 @@ public class EditorActivity extends AppCompatActivity implements
             case R.id.action_save:
                 // Do nothing for now
                 ContentValues contentValues = new ContentValues();
-                if (getIntent().getData() != null){ //update data
+                if (uriResult != null){ //update data
 
                     if (inputValidation()){
                         contentValues.clear();
