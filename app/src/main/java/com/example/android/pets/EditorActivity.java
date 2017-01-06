@@ -39,6 +39,8 @@ import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.helper.Constant;
 import com.example.android.pets.helper.Helpers;
 
+import java.util.zip.Inflater;
+
 
 /**
  * Allows user to create a new pet or edit an existing one.
@@ -70,7 +72,6 @@ public class EditorActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_pet_name);
         mBreedEditText = (EditText) findViewById(R.id.edit_pet_breed);
@@ -133,6 +134,14 @@ public class EditorActivity extends AppCompatActivity implements
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
+        MenuItem actionDelete = menu.findItem(R.id.action_delete);
+        /** hide, unhide delete action*/    
+        if (getIntent().getData() != null) {
+            actionDelete.setVisible(false);
+        } else {
+            actionDelete.setVisible(true);
+        }
+
         return true;
     }
 
