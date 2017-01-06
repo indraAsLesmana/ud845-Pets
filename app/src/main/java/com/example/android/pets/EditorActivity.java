@@ -167,10 +167,10 @@ public class EditorActivity extends AppCompatActivity implements
                                 Integer.parseInt(mWeightEditText.getText().toString()));
 
                         String[] selectionArg = new String[]{uriResult.getLastPathSegment()};
-                        int id = getContentResolver().update(uriResult, contentValues,
+                        int rowEffected = getContentResolver().update(uriResult, contentValues,
                                 null, selectionArg);
 
-                        if (id > 0){ // if result > 1, is succes effected row
+                        if (rowEffected > 0){ // if result > 1, is succes effected row
                             finish();
                         }
 
@@ -231,8 +231,9 @@ public class EditorActivity extends AppCompatActivity implements
      * */
     private boolean inputValidation () {
         boolean result = true;
-        if (mNameEditText.getText().toString().trim().equals("") &&
-                mWeightEditText.getText().toString().trim().equals("")){
+        if (mNameEditText.getText().toString().trim().equals("") ||
+                mWeightEditText.getText().toString().trim().equals("") ||
+                mBreedEditText.getText().toString().trim().equals("") ||){
             result = false;
         }
         return result;
