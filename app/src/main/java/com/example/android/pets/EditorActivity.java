@@ -138,9 +138,9 @@ public class EditorActivity extends AppCompatActivity implements
         MenuItem actionDelete = menu.findItem(R.id.action_delete);
         /** hide, unhide delete action*/
         if (getIntent().getData() != null) {
-            actionDelete.setVisible(false);
-        } else {
             actionDelete.setVisible(true);
+        } else {
+            actionDelete.setVisible(false);
         }
 
         return true;
