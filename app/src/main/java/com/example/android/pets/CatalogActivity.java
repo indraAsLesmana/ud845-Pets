@@ -197,4 +197,5 @@ public class CatalogActivity extends AppCompatActivity implements
             Toast.makeText(this, "Delete Success", Toast.LENGTH_SHORT).show();
         }
     }
+    /** finish Jan 6 2016*/
 }
