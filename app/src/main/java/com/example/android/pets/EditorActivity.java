@@ -135,7 +135,7 @@ public class EditorActivity extends AppCompatActivity implements
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
         MenuItem actionDelete = menu.findItem(R.id.action_delete);
-        /** hide, unhide delete action*/    
+        /** hide, unhide delete action*/
         if (getIntent().getData() != null) {
             actionDelete.setVisible(false);
         } else {
