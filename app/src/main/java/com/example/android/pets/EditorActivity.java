@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -152,23 +153,56 @@ public class EditorActivity extends AppCompatActivity implements
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 // Do nothing for now
-                if (inputValidation()){
+                ContentValues contentValues = new ContentValues();
+                if (getIntent().getData() != null){ //update data
 
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(PetEntry.COLUMN_PET_NAME, mNameEditText.getText().toString());
-                    contentValues.put(PetEntry.COLUMN_PET_BREED, mBreedEditText.getText().toString());
-                    contentValues.put(PetEntry.COLUMN_PET_GENDER, mGender);
-                    contentValues.put(PetEntry.COLUMN_PET_WEIGHT, Integer.parseInt(mWeightEditText.getText().toString()));
+                    if (inputValidation()){
+                        contentValues.clear();
+                        contentValues.put(PetEntry.COLUMN_PET_NAME,
+                                mNameEditText.getText().toString());
+                        contentValues.put(PetEntry.COLUMN_PET_BREED,
+                                mBreedEditText.getText().toString());
+                        contentValues.put(PetEntry.COLUMN_PET_GENDER,
+                                mGenderSpinner.getSelectedItemPosition());
+                        contentValues.put(PetEntry.COLUMN_PET_WEIGHT,
+                                Integer.parseInt(mWeightEditText.getText().toString()));
 
-                    Uri uriResult = getContentResolver().insert(PetEntry.CONTENT_URI, contentValues);
+                        String[] selectionArg = new String[]{uriResult.getLastPathSegment()};
+                        int id = getContentResolver().update(uriResult, contentValues,
+                                null, selectionArg);
 
-                    if (uriResult != null){
-                        Log.i(TAG, uriResult.toString());
-                        finish();
+                        if (id > 0){ // if result > 1, is succes effected row
+                            finish();
+                        }
+
+                    }else {
+                        Toast.makeText(this, "Please fill all form", Toast.LENGTH_LONG).show();
                     }
 
-                }else {
-                    Toast.makeText(this, "Please fill all form", Toast.LENGTH_LONG).show();
+                } else { //save data
+
+                    if (inputValidation()){
+                        contentValues.clear();
+                        contentValues.put(PetEntry.COLUMN_PET_NAME,
+                                mNameEditText.getText().toString());
+                        contentValues.put(PetEntry.COLUMN_PET_BREED,
+                                mBreedEditText.getText().toString());
+                        contentValues.put(PetEntry.COLUMN_PET_GENDER,
+                                mGender);
+                        contentValues.put(PetEntry.COLUMN_PET_WEIGHT,
+                                Integer.parseInt(mWeightEditText.getText().toString()));
+
+                        Uri uriResult = getContentResolver().insert(PetEntry.CONTENT_URI,
+                                contentValues);
+
+                        if (uriResult != null){
+                            Log.i(TAG, uriResult.toString());
+                            finish();
+                        }
+
+                    }else {
+                        Toast.makeText(this, "Please fill all form", Toast.LENGTH_LONG).show();
+                    }
                 }
 
                 return true;
