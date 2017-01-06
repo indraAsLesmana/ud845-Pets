@@ -17,15 +17,18 @@ package com.example.android.pets;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,6 +65,9 @@ public class EditorActivity extends AppCompatActivity implements
     /** EditText field to enter the pet's gender */
     private Spinner mGenderSpinner;
 
+    /** warn user unsaved changes*/
+    private boolean mPetHasChanged = false;
+
     /**
      * Gender of the pet. The possible values are:
      * 0 for unknown gender, 1 for male, 2 for female.
@@ -79,6 +85,12 @@ public class EditorActivity extends AppCompatActivity implements
         mWeightEditText = (EditText) findViewById(R.id.edit_pet_weight);
         mGenderSpinner = (Spinner) findViewById(R.id.spinner_gender);
 
+        /** listen wherever changes has been made*/
+        mNameEditText.setOnTouchListener(mOnTouchListener);
+        mBreedEditText.setOnTouchListener(mOnTouchListener);
+        mWeightEditText.setOnTouchListener(mOnTouchListener);
+        mGenderSpinner.setOnTouchListener(mOnTouchListener);
+
         if (getIntent().getData() != null){ // ingat! karna tadi setData, jadi getData
             uriResult = getIntent().getData();
 
@@ -89,6 +101,38 @@ public class EditorActivity extends AppCompatActivity implements
         }
 
         setupSpinner();
+    }
+
+    /** listen where changes has been made */
+    private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            mPetHasChanged = true;
+            return false;
+        }
+    };
+
+    /** dialog unsaved changes*/
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     /**
@@ -143,6 +187,27 @@ public class EditorActivity extends AppCompatActivity implements
             actionDelete.setVisible(false);
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mPetHasChanged){
+            super.onBackPressed();
+            return;
+        }
+        // Otherwise if there are unsaved changes, setup a dialog to warn the user.
+        // Create a click listener to handle the user confirming that changes should be discarded.
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Discard" button, close the current activity.
+                        finish();
+                    }
+                };
+
+        // Show dialog that there are unsaved changes
+        showUnsavedChangesDialog(discardButtonClickListener);
     }
 
     @Override
@@ -209,11 +274,11 @@ public class EditorActivity extends AppCompatActivity implements
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Do nothing for now
-                String [] selectionArg = new String[] {uriResult.getLastPathSegment()};
-                int rowEffect =  getContentResolver().delete(
+                String[] selectionArg = new String[]{uriResult.getLastPathSegment()};
+                int rowEffect = getContentResolver().delete(
                         uriResult, null, selectionArg);
 
-                if (rowEffect > 0){
+                if (rowEffect > 0) {
                     Toast.makeText(this, "Delete success", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -221,7 +286,21 @@ public class EditorActivity extends AppCompatActivity implements
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
                 // Navigate back to parent activity (CatalogActivity)
-                NavUtils.navigateUpFromSameTask(this);
+                if (!mPetHasChanged) {
+                    NavUtils.navigateUpFromSameTask(this);
+                    return true;
+                }
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // User clicked "Discard" button, close the current activity.
+                                finish();
+                            }
+                        };
+
+                // Show dialog that there are unsaved changes
+                showUnsavedChangesDialog(discardButtonClickListener);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -233,7 +312,7 @@ public class EditorActivity extends AppCompatActivity implements
         boolean result = true;
         if (mNameEditText.getText().toString().trim().equals("") ||
                 mWeightEditText.getText().toString().trim().equals("") ||
-                mBreedEditText.getText().toString().trim().equals("") ||){
+                mBreedEditText.getText().toString().trim().equals("")){
             result = false;
         }
         return result;

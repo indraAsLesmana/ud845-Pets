@@ -64,4 +64,7 @@
     <string name="empety_message">data is null add some pets here</string>
     <string name="edit_pet">Edit a pet</string>
     <string name="add_pet">Add a pet</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
 </resources>
