@@ -273,7 +273,6 @@ public class EditorActivity extends AppCompatActivity implements
 
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
-
                 showDeleteConfirmationDialog();
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar

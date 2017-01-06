@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +39,6 @@ import android.content.Loader;
 import com.example.android.pets.adapter.PetCursorAdapter;
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.helper.Constant;
-import com.example.android.pets.helper.Helpers;
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -51,25 +49,14 @@ public class CatalogActivity extends AppCompatActivity implements
     private static final String TAG = CatalogActivity.class.getSimpleName();
     private ContentValues contentValues = new ContentValues();
 
-    /** Projection */
-    private final String [] PROJECTION_ALL_COLUMN = {
-            PetEntry._ID,
-            PetEntry.COLUMN_PET_NAME,
-            PetEntry.COLUMN_PET_BREED,
-            PetEntry.COLUMN_PET_GENDER,
-            PetEntry.COLUMN_PET_WEIGHT
-    };
-
-    private final String[] PROJECTION_ALL_3_COLUMN = {
-            PetEntry._ID,
-            PetEntry.COLUMN_PET_NAME,
-            PetEntry.COLUMN_PET_BREED,
-    };
-
+    private Cursor checkTable;
 
     private ListView main_listview;
     private PetCursorAdapter mCursorAdapter;
-    private Cursor cursorResult;
+
+    /** cheking is table empety*/
+    private boolean isTableEmpety;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +128,11 @@ public class CatalogActivity extends AppCompatActivity implements
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // Do nothing for now
-                showDeleteConfirmationDialog();
+                if (!isTableEmpety){
+                    showDeleteConfirmationDialog();
+                }else {
+                    Toast.makeText(this, "data is empety", Toast.LENGTH_SHORT).show();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -151,7 +142,7 @@ public class CatalogActivity extends AppCompatActivity implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
                 PetEntry.CONTENT_URI,
-                PROJECTION_ALL_3_COLUMN,
+                Constant.PROJECTION_3_COLUMN,
                 null,
                 null,
                 null
@@ -161,6 +152,12 @@ public class CatalogActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
+        /** checking is table empety or not*/
+        if(data.moveToFirst()){  // if on table can move to first data, table not empety
+            isTableEmpety = false;
+        }else {
+            isTableEmpety = true;
+        }
     }
 
     @Override
