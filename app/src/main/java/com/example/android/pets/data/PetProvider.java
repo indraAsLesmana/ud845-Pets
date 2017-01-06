@@ -238,6 +238,7 @@ public class PetProvider extends ContentProvider {
     /** delete by id method */
     private int deleteById(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = mDBhelper.getWritableDatabase();
+        selection = PetEntry._ID + "=?";
         int rowDeleted = db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
 
         /** notify if delete success*/

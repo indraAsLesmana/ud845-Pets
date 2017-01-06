@@ -142,7 +142,6 @@ public class EditorActivity extends AppCompatActivity implements
         } else {
             actionDelete.setVisible(false);
         }
-
         return true;
     }
 
@@ -210,6 +209,14 @@ public class EditorActivity extends AppCompatActivity implements
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Do nothing for now
+                String [] selectionArg = new String[] {uriResult.getLastPathSegment()};
+                int rowEffect =  getContentResolver().delete(
+                        uriResult, null, selectionArg);
+
+                if (rowEffect > 0){
+                    Toast.makeText(this, "Delete success", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
